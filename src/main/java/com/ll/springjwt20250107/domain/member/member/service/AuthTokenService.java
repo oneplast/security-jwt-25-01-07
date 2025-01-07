@@ -17,7 +17,7 @@ public class AuthTokenService {
     private long accessTokenExpirationSeconds;
 
 
-    public String genAccessToken(Member member) {
+    String genAccessToken(Member member) {
         long id = member.getId();
         String username = member.getUsername();
 
@@ -28,7 +28,7 @@ public class AuthTokenService {
         );
     }
 
-    public Map<String, Object> payload(String accessToken) {
+    Map<String, Object> payload(String accessToken) {
         Map<String, Object> parsedPayload = Ut.jwt.payload(jwtSecretKey, accessToken);
 
         if (parsedPayload == null) {
