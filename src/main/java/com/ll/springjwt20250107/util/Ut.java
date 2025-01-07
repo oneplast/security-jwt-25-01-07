@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+import javax.crypto.SecretKey;
 import lombok.SneakyThrows;
 
 public class Ut {
@@ -37,6 +38,22 @@ public class Ut {
                     .expiration(expiration)
                     .signWith(secretKey)
                     .compact();
+        }
+
+        public static boolean isValid(String secret, String jwtStr) {
+            SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+
+            try {
+                Jwts
+                        .parser()
+                        .verifyWith(secretKey)
+                        .build()
+                        .parse(jwtStr);
+            } catch (Exception e) {
+                return false;
+            }
+
+            return true;
         }
     }
 }
