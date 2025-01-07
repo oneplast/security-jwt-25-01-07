@@ -76,12 +76,12 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 삭제")
     void t2() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAccessToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAccessToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
                         delete("/api/v1/posts/1/comments/1")
-                                .header("Authorization", "Bearer " + actorAccessToken)
+                                .header("Authorization", "Bearer " + actorAuthToken)
                 )
                 .andDo(print());
 
@@ -97,12 +97,12 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 수정")
     void t3() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAccessToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAccessToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
                         put("/api/v1/posts/1/comments/1")
-                                .header("Authorization", "Bearer " + actorAccessToken)
+                                .header("Authorization", "Bearer " + actorAuthToken)
                                 .content("""
                                         {
                                             "content": "내용 new"
@@ -130,12 +130,12 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 등록")
     void t4() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAccessToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAccessToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
                         post("/api/v1/posts/1/comments")
-                                .header("Authorization", "Bearer " + actorAccessToken)
+                                .header("Authorization", "Bearer " + actorAuthToken)
                                 .content("""
                                         {
                                             "content": "내용 new"
