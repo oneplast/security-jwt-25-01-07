@@ -14,9 +14,22 @@ public class AuthTokenService {
         String username = member.getUsername();
 
         return Ut.jwt.toString(
-                "askdfh12412sdalkghsdaklghsdaklghsadilghewioo12i4o21498ht98ag0m1t099omaopfm-012k4epo",
-                60 * 30 * 24 * 365,
+                "askdfhsdalkghsdaklghsdaklghsadilghewioo12i4o21498ht98ag0m1t099omaopfm-012k4epo",
+                60 * 60 * 24 * 365,
                 Map.of("id", id, "username", username)
         );
+    }
+
+    public Map<String, Object> payload(String secret, String accessToken) {
+        Map<String, Object> parsedPayload = Ut.jwt.payload(secret, accessToken);
+
+        if (parsedPayload == null) {
+            return null;
+        }
+
+        long id = (long) (Integer) parsedPayload.get("id");
+        String username = (String) parsedPayload.get("username");
+
+        return Map.of("id", id, "username", username);
     }
 }

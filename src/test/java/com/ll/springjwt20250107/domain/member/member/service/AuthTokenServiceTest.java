@@ -94,7 +94,7 @@ class AuthTokenServiceTest {
     }
 
     @Test
-    @DisplayName("authTokenService.genAccessToken(member)")
+    @DisplayName("authTokenService.genAccessToken(member);")
     void t4() {
         Member memberUser1 = memberService.findByUsername("user1").get();
 
@@ -102,6 +102,16 @@ class AuthTokenServiceTest {
 
         assertThat(accessToken).isNotBlank();
 
-        System.out.println("accessToken = " + accessToken);
+        assertThat(Ut.jwt.isValid(secret, accessToken)).isTrue();
+
+        Map<String, Object> parsedPayload = authTokenService.payload(secret, accessToken);
+
+        assertThat(parsedPayload)
+                .containsAllEntriesOf(
+                        Map.of(
+                                "id", memberUser1.getId(),
+                                "username", memberUser1.getUsername()
+                        )
+                );
     }
 }
