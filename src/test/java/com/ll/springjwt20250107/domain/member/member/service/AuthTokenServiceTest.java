@@ -6,9 +6,9 @@ import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.util.Ut;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
 import java.util.Date;
 import java.util.Map;
+import javax.crypto.SecretKey;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,14 @@ class AuthTokenServiceTest {
         Date issuedAt = new Date();
         Date expiration = new Date(issuedAt.getTime() + 1000L * expireSeconds);
 
-        Key secretKey = Keys.hmacShaKeyFor(secret.getBytes());
+        SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes());
 
-        String jwt = Jwts.builder()
+        Map<String, Object> payload = Map.of(
+                "name", "Paul",
+                "age", 23
+        );
+
+        String jwtStr = Jwts.builder()
                 .claims(Map.of(
                         "name", "Paul",
                         "age", 23
@@ -56,9 +61,19 @@ class AuthTokenServiceTest {
                 .signWith(secretKey)
                 .compact();
 
-        assertThat(jwt).isNotBlank();
+        assertThat(jwtStr).isNotBlank();
 
-        System.out.println("jwt = " + jwt);
+        // 키가 유효한지 테스트
+        Map<String, Object> parsedPayload = (Map<String, Object>) Jwts
+                .parser()
+                .verifyWith(secretKey)
+                .build()
+                .parse(jwtStr)
+                .getPayload();
+
+        // 키로부터 payload 를 파싱한 결과가 원래 payload 와 같은지 테스트
+        assertThat(parsedPayload)
+                .containsAllEntriesOf(payload);
     }
 
     @Test
