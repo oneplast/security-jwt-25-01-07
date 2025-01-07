@@ -4,24 +4,32 @@ import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.util.Ut;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthTokenService {
+    @Value("${custom.jwt.secretKey}")
+    private String jwtSecretKey;
+
+    @Value("${custom.accessToken.expirationSeconds}")
+    private long accessTokenExpirationSeconds;
+
+
     public String genAccessToken(Member member) {
         long id = member.getId();
         String username = member.getUsername();
 
         return Ut.jwt.toString(
-                "askdfhsdalkghsdaklghsdaklghsadilghewioo12i4o21498ht98ag0m1t099omaopfm-012k4epo",
-                60 * 60 * 24 * 365,
+                jwtSecretKey,
+                accessTokenExpirationSeconds,
                 Map.of("id", id, "username", username)
         );
     }
 
-    public Map<String, Object> payload(String secret, String accessToken) {
-        Map<String, Object> parsedPayload = Ut.jwt.payload(secret, accessToken);
+    public Map<String, Object> payload(String accessToken) {
+        Map<String, Object> parsedPayload = Ut.jwt.payload(jwtSecretKey, accessToken);
 
         if (parsedPayload == null) {
             return null;
