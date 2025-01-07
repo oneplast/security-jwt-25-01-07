@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,16 +33,14 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String apiKey = authorization.substring("Bearer ".length());
+        String accessToken = authorization.substring("Bearer ".length());
 
-        Optional<Member> opMember = memberService.findByApiKey(apiKey);
+        Member member = memberService.getMemberFromAccessToken(accessToken);
 
-        if (opMember.isEmpty()) {
+        if (member == null) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        Member member = opMember.get();
 
         rq.setLogin(member.getUsername());
 
