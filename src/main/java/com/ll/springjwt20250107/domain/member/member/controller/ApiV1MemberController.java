@@ -2,6 +2,7 @@ package com.ll.springjwt20250107.domain.member.member.controller;
 
 import com.ll.springjwt20250107.domain.member.member.dto.MemberDto;
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
+import com.ll.springjwt20250107.domain.member.member.service.AuthTokenService;
 import com.ll.springjwt20250107.domain.member.member.service.MemberService;
 import com.ll.springjwt20250107.global.exceptions.ServiceException;
 import com.ll.springjwt20250107.global.rq.Rq;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/members")
 public class ApiV1MemberController {
     private final MemberService memberService;
+    private final AuthTokenService authTokenService;
     private final Rq rq;
 
     record MemberJoinReqBody(
@@ -52,7 +54,8 @@ public class ApiV1MemberController {
 
     record MemberLoginResBody(
             MemberDto item,
-            String apiKey
+            String apiKey,
+            String accessToken
     ) {
     }
 
@@ -66,8 +69,10 @@ public class ApiV1MemberController {
             throw new ServiceException("401-2", "비밀번호가 일치하지 않습니다.");
         }
 
+        String accessToken = authTokenService.genAccessToken(member);
+
         return new RsData<>("200-1", "%s님 환영합니다.".formatted(member.getName()),
-                new MemberLoginResBody(new MemberDto(member), member.getApiKey()));
+                new MemberLoginResBody(new MemberDto(member), member.getApiKey(), accessToken));
     }
 
     @GetMapping("/me")
