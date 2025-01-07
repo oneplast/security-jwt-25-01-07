@@ -1,4 +1,4 @@
-package com.ll.springjwt20250107.domain.controller;
+package com.ll.springjwt20250107.domain.member.member.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ll.springjwt20250107.domain.member.member.controller.ApiV1MemberController;
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.service.MemberService;
 import java.nio.charset.StandardCharsets;
