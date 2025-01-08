@@ -2,7 +2,6 @@ package com.ll.springjwt20250107.global.security;
 
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.repository.MemberRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 member.getId(),
                 member.getUsername(),
                 member.getPassword(),
-                List.of()
+                member.getAuthorities()
         );
     }
 }

@@ -32,6 +32,8 @@ public class SecurityConfig {
                                                 "/api/*/posts/{id:\\d+}",
                                                 "/api/*/posts/{postId:\\d+}/comments")
                                         .permitAll()
+                                        .requestMatchers("/api/*/posts/statistics")
+                                        .hasAuthority("ADMIN_ACTING")
                                         .anyRequest()
                                         .authenticated()
                 )

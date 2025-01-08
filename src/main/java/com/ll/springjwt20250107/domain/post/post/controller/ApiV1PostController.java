@@ -31,6 +31,21 @@ public class ApiV1PostController {
     private final PostService postService;
     private final Rq rq;
 
+    record PostStatisticsResBody(
+            long totalPostCount,
+            long totalPublishedPostCount,
+            long totalListedPostCount
+    ) {
+    }
+
+    @GetMapping("/statistics")
+    @Transactional(readOnly = true)
+    public PostStatisticsResBody statistic() {
+        Member actor = rq.getActor();
+
+        return new PostStatisticsResBody(10, 10, 10);
+    }
+
     @GetMapping("/mine")
     @Transactional(readOnly = true)
     public PageDto<PostDto> mine(

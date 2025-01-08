@@ -3,7 +3,6 @@ package com.ll.springjwt20250107.global.rq;
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.service.MemberService;
 import com.ll.springjwt20250107.global.security.SecurityUser;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +31,7 @@ public class Rq {
                 member.getId(),
                 member.getUsername(),
                 "",
-                List.of()
+                member.getAuthorities()
         );
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(

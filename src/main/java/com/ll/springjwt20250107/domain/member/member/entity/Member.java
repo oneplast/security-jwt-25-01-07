@@ -3,11 +3,16 @@ package com.ll.springjwt20250107.domain.member.member.entity;
 import com.ll.springjwt20250107.global.jpa.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 @Setter
@@ -43,5 +48,22 @@ public class Member extends BaseTime {
     public Member(long id, String username) {
         this.setId(id);
         this.username = username;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getAuthoritiesAsStringList()
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+    }
+
+    public List<String> getAuthoritiesAsStringList() {
+        List<String> authorities = new ArrayList<>();
+
+        if (isAdmin()) {
+            authorities.add("ADMIN_ACTING");
+        }
+
+        return authorities;
     }
 }
