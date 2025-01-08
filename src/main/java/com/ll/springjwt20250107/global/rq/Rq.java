@@ -3,6 +3,7 @@ package com.ll.springjwt20250107.global.rq;
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.service.MemberService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,19 +38,14 @@ public class Rq {
     }
 
     public Member getActor() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null) {
-            return null;
-        }
-
-        if (authentication.getPrincipal() == null || authentication.getPrincipal() instanceof String) {
-            return null;
-        }
-
-        UserDetails user = (UserDetails) authentication.getPrincipal();
-        String username = user.getUsername();
-
-        return memberService.findByUsername(username).get();
+        return Optional.ofNullable(SecurityContextHolder
+                .getContext()
+                .getAuthentication())
+                .map(Authentication::getPrincipal)
+                .filter(principal -> principal instanceof UserDetails)
+                .map(principal -> (UserDetails) principal)
+                .map(UserDetails::getUsername)
+                .flatMap(memberService::findByUsername)
+                .orElse(null);
     }
 }
