@@ -78,7 +78,8 @@ public class ApiV1MemberController {
     @GetMapping("/me")
     @Transactional(readOnly = true)
     public MemberDto me() {
-        Member member = rq.getActor();
+        Member actor = rq.getActor();
+        Member member = memberService.findById(actor.getId()).get();
 
         return new MemberDto(member);
     }
