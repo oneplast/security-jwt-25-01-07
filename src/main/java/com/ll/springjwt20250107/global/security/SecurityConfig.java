@@ -33,7 +33,7 @@ public class SecurityConfig {
                                                 "/api/*/posts/{postId:\\d+}/comments")
                                         .permitAll()
                                         .requestMatchers("/api/*/posts/statistics")
-                                        .hasAuthority("ADMIN_ACTING")
+                                        .hasAuthority("ROLE_ADMIN")
                                         .anyRequest()
                                         .authenticated()
                 )
