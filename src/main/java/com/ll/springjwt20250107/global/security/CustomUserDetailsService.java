@@ -4,7 +4,6 @@ import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +20,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 () -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.")
         );
 
-        return new User(
+        return new SecurityUser(
+                member.getId(),
                 member.getUsername(),
                 member.getPassword(),
                 List.of()
