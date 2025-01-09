@@ -53,7 +53,7 @@ public class MemberService {
     }
 
     public String genAuthToken(Member member) {
-        return this.genAccessToken(member);
+        return member.getApiKey() + " " + this.genAccessToken(member);
     }
 
     public Member getMemberFromAccessToken(String accessToken) {

@@ -76,7 +76,7 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 삭제")
     void t2() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAuthToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -97,7 +97,7 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 수정")
     void t3() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAuthToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -130,7 +130,7 @@ public class ApiV1PostCommentControllerTest {
     @DisplayName("댓글 등록")
     void t4() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAuthToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(

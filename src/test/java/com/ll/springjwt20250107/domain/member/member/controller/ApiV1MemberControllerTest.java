@@ -270,7 +270,7 @@ class ApiV1MemberControllerTest {
     @DisplayName("내 정보, with user1")
     void t9() throws Exception {
         Member actor = memberService.findByUsername("user1").get();
-        String actorAuthToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAuthToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -295,7 +295,7 @@ class ApiV1MemberControllerTest {
     @DisplayName("내 정보, with user2")
     void t10() throws Exception {
         Member actor = memberService.findByUsername("user2").get();
-        String actorAuthToken = memberService.genAccessToken(actor);
+        String actorAuthToken = memberService.genAuthToken(actor);
 
         ResultActions resultActions = mvc
                 .perform(
@@ -322,7 +322,7 @@ class ApiV1MemberControllerTest {
         ResultActions resultActions = mvc
                 .perform(
                         get("/api/v1/members/me")
-                                .header("Authorization","Bearer wrong-access-key")
+                                .header("Authorization","Bearer wrong-access-key ")
                 )
                 .andDo(print());
 
