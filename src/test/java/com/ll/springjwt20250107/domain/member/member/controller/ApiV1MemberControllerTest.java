@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.ll.springjwt20250107.domain.member.member.entity.Member;
 import com.ll.springjwt20250107.domain.member.member.service.MemberService;
+import jakarta.servlet.http.Cookie;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -162,6 +163,21 @@ class ApiV1MemberControllerTest {
                 .andExpect(jsonPath("$.data.item.nickname").value(member.getNickname()))
                 .andExpect(jsonPath("$.data.apiKey").value(member.getApiKey()))
                 .andExpect(jsonPath("$.data.accessToken").exists());
+
+        resultActions
+                .andExpect(result -> {
+                    Cookie accessTokenCookie = result.getResponse().getCookie("accessToken");
+                    assertThat(accessTokenCookie.getValue()).isNotBlank();
+                    assertThat(accessTokenCookie.getPath()).isEqualTo("/");
+                    assertThat(accessTokenCookie.isHttpOnly()).isTrue();
+                    assertThat(accessTokenCookie.getSecure()).isTrue();
+
+                    Cookie apiKeyCookie = result.getResponse().getCookie("apiKey");
+                    assertThat(apiKeyCookie.getValue()).isEqualTo(member.getApiKey());
+                    assertThat(apiKeyCookie.getPath()).isEqualTo("/");
+                    assertThat(apiKeyCookie.isHttpOnly()).isTrue();
+                    assertThat(apiKeyCookie.getSecure()).isTrue();
+                });
     }
 
     @Test
@@ -322,7 +338,7 @@ class ApiV1MemberControllerTest {
         ResultActions resultActions = mvc
                 .perform(
                         get("/api/v1/members/me")
-                                .header("Authorization","Bearer wrong-access-key ")
+                                .header("Authorization", "Bearer wrong-access-key ")
                 )
                 .andDo(print());
 
