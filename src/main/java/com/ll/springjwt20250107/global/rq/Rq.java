@@ -83,6 +83,10 @@ public class Rq {
                 .orElse(null);
     }
 
+    public String getHeader(String name) {
+        return req.getHeader(name);
+    }
+
     public void setHeader(String name, String value) {
         resp.setHeader(name, value);
     }
