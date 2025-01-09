@@ -25,6 +25,7 @@ public class SecurityConfig {
 //                                .requestMatchers("/h2-console/login.do")    // 상위 룰 우선이기 때문에 의미 없음
 //                                .authenticated()                              // 상위 룰 우선이기 때문에 의미 없음
                                         .requestMatchers("/api/*/members/login",
+                                                "/api/*/members/logout",
                                                 "/api/*/members/join")
                                         .permitAll()
                                         .requestMatchers(HttpMethod.GET,
