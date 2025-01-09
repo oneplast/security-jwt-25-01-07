@@ -93,6 +93,19 @@ public class Rq {
                 .orElse(null);
     }
 
+    public void deleteCookie(String name) {
+        ResponseCookie cookie = ResponseCookie.from(name, null)
+                .path("/")
+                .domain("localhost")
+                .sameSite("Strict")
+                .secure(true)
+                .httpOnly(true)
+                .maxAge(0)
+                .build();
+
+        resp.addHeader("Set-Cookie", cookie.toString());
+    }
+
     public String getHeader(String name) {
         return req.getHeader(name);
     }

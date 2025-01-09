@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,6 +77,18 @@ public class ApiV1MemberController {
 
         return new RsData<>("200-1", "%s님 환영합니다.".formatted(member.getName()),
                 new MemberLoginResBody(new MemberDto(member), member.getApiKey(), accessToken));
+    }
+
+    @DeleteMapping("/logout")
+    @Transactional(readOnly = true)
+    public RsData<Void> logout() {
+        rq.deleteCookie("accessToken");
+        rq.deleteCookie("apiKey");
+
+        return new RsData<>(
+                "200-1",
+                "로그아웃 되었습니다."
+        );
     }
 
     @GetMapping("/me")
