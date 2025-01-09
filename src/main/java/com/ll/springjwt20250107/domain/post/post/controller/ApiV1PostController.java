@@ -107,7 +107,7 @@ public class ApiV1PostController {
     @PostMapping
     @Transactional
     public RsData<PostWithContentDto> write(@RequestBody @Valid PostWriteReqBody reqBody) {
-        Member actor = rq.getActor();
+        Member actor = rq.findByActor().get();
 
 //        if (user != null) {
 //            Authentication authentication = (Authentication) principal;
